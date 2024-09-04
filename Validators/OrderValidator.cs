@@ -1,27 +1,23 @@
 ﻿using FluentValidation;
-using KDSOrderManagement.Models.Entities;
+using KDSOrderManagement.Models;
 
 namespace KDSOrderManagement.Validators
 {
-    public class OrderValidator : AbstractValidator<Order>
+    public class OrderValidator : AbstractValidator<OrderDto>
     {
         public OrderValidator() 
         {
             RuleFor(c => c.CustomerName)
                 .NotEmpty().WithMessage("Customer name must be provided.")
-                .NotNull().WithMessage("Customer name must be provided.");
-
-            RuleFor(c => c.Items)
-                .NotEmpty().WithMessage("Items must be added.")
-                .NotNull().WithMessage("Items must be added.");
+                .NotNull().WithMessage("Customer name cannot be null.");
 
             RuleFor(c => c.OrderTime)
                 .NotEmpty().WithMessage("Time must be provided.")
-                .NotNull().WithMessage("Time must be provided.");
+                .NotNull().WithMessage("Time cannot be null.");
 
             RuleFor(c => c.Status)
                 .NotEmpty().WithMessage("Status must be provided.")
-                .NotNull().WithMessage("Status must be provided.");
+                .NotNull().WithMessage("Status cannot be null.");
         }
     }
 }

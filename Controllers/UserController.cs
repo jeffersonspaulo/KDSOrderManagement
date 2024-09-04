@@ -15,10 +15,24 @@ namespace KDSOrderManagement.Controllers
             _userService = userService;
         }
 
-        [HttpPost("login")]
-        public async Task<IActionResult> Login([FromBody] LoginDto loginDto)
+        [HttpPost("register")]
+        public async Task<IActionResult> Register([FromBody] UserDto userDto)
         {
-            var token = await _userService.AuthenticateAsync(loginDto.Username, loginDto.Password);
+            try
+            {
+                var token = await _userService.CreateAsync(userDto);
+                return Ok(new { Token = token });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { Message = ex.Message });
+            }
+        }
+
+        [HttpPost("login")]
+        public async Task<IActionResult> Login([FromBody] UserDto userDto)
+        {
+            var token = await _userService.AuthenticateAsync(userDto);
 
             if (token == null)
                 return Unauthorized("Invalid credentials");

@@ -4,11 +4,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace KDSOrderManagement.Data.Repositories
 {
-    public class UserRepository : IUserRepository
+    public class UserRepository : Repository<User>,  IUserRepository
     {
         private readonly OrderContext _context;
 
-        public UserRepository(OrderContext context)
+        public UserRepository(OrderContext context) : base(context)
         {
             _context = context;
         }

@@ -1,5 +1,9 @@
-﻿using KDSOrderManagement.Data.Repositories.Interfaces;
+﻿using FluentValidation;
+using KDSOrderManagement.Data.Repositories.Interfaces;
+using KDSOrderManagement.Models;
+using KDSOrderManagement.Models.Entities;
 using KDSOrderManagement.Services.Interfaces;
+using KDSOrderManagement.Validators;
 
 namespace KDSOrderManagement.Services
 {
@@ -16,19 +20,61 @@ namespace KDSOrderManagement.Services
             _userRepository = userRepository;
         }
 
-        public async Task<string> AuthenticateAsync(string username, string password)
+        public async Task<string> CreateAsync(UserDto userDto)
         {
-            var user = await _userRepository.GetByUsernameAsync(username);
+            var validator = new UserValidator();
+            var resultValidator = validator.Validate(userDto);
 
-            if (user == null || !VerifyPasswordHash(password, user.PasswordHash))
-                return null; 
+            if (!resultValidator.IsValid)
+            {
+                throw new ValidationException(resultValidator.Errors);
+            }
 
-            return _tokenService.GenerateToken(user);
+            var existingUser = await _userRepository.GetByUsernameAsync(userDto.Username);
+            if (existingUser != null)
+            {
+                throw new Exception("User already exists.");
+            }
+
+            var passwordHash = BCrypt.Net.BCrypt.HashPassword(userDto.Password);
+
+            var user = new User
+            {
+                Username = userDto.Username,
+                PasswordHash = passwordHash
+            };
+
+            await _userRepository.AddAsync(user);
+
+            var token = _tokenService.GenerateToken(user);
+
+            return token;
+
         }
 
-        private bool VerifyPasswordHash(string password, string storedHash)
+        public async Task<string> AuthenticateAsync(UserDto userDto)
         {
-            return BCrypt.Net.BCrypt.Verify(password, storedHash);
+            var validator = new UserValidator();
+            var resultValidator = validator.Validate(userDto);
+
+            if (!resultValidator.IsValid)
+            {
+                throw new ValidationException(resultValidator.Errors);
+            }
+
+            var user = await _userRepository.GetByUsernameAsync(userDto.Username);
+
+            if (user == null || !VerifyPasswordHash(userDto.Password, user.PasswordHash))
+                return null;
+
+            var token = _tokenService.GenerateToken(user);
+
+            return token;
+        }
+
+        private bool VerifyPasswordHash(string password, string passwordHash)
+        {
+            return BCrypt.Net.BCrypt.Verify(password, passwordHash);
         }
     }
 }

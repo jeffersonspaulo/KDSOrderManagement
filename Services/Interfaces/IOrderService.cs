@@ -1,4 +1,5 @@
-﻿using KDSOrderManagement.Models.Entities;
+﻿using KDSOrderManagement.Models;
+using KDSOrderManagement.Models.Entities;
 
 namespace KDSOrderManagement.Services.Interfaces
 {
@@ -6,12 +7,9 @@ namespace KDSOrderManagement.Services.Interfaces
     {
         Task<IEnumerable<Order>> GetAllAsync();
         Task<Order> GetByIdAsync(int id);
-        Task<Order> CreateAsync(Order order);
-        Task UpdateAsync(Order order);
+        Task<Order> CreateAsync(OrderDto orderDto);
+        Task UpdateAsync(int id, OrderDto orderDto);
         Task DeleteAsync(int id);
-        Task<IEnumerable<OrderItem>> GetItemsByOrderIdAsync(int id);
-        Task<OrderItem> AddItemToOrderAsync(int id, OrderItem item);
-        Task UpdateOrderItemAsync(OrderItem item);
-        Task DeleteOrderItemAsync(int id, int itemId);
+        
     }
 }

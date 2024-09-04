@@ -1,6 +1,9 @@
-﻿using KDSOrderManagement.Data.Repositories.Interfaces;
+﻿using FluentValidation;
+using KDSOrderManagement.Data.Repositories.Interfaces;
+using KDSOrderManagement.Models;
 using KDSOrderManagement.Models.Entities;
 using KDSOrderManagement.Services.Interfaces;
+using KDSOrderManagement.Validators;
 
 namespace KDSOrderManagement.Services
 {
@@ -23,13 +26,35 @@ namespace KDSOrderManagement.Services
             return await _orderRepository.GetByIdAsync(id);
         }
 
-        public async Task<Order> CreateAsync(Order order)
+        public async Task<Order> CreateAsync(OrderDto orderDto)
         {
+            Validate(orderDto);
+
+            var order = new Order
+            {
+                CustomerName = orderDto.CustomerName,
+                OrderTime = orderDto.OrderTime,
+                Status = orderDto.Status
+            };
+
             return await _orderRepository.AddAsync(order);
         }
 
-        public async Task UpdateAsync(Order order)
+        public async Task UpdateAsync(int id, OrderDto orderDto)
         {
+            Validate(orderDto);
+
+            var order = await _orderRepository.GetByIdAsync(id);
+
+            if (order == null)
+            {
+                throw new Exception($"Order with ID {id} not found.");
+            }
+
+            order.CustomerName = orderDto.CustomerName;
+            order.OrderTime = orderDto.OrderTime;
+            order.Status = orderDto.Status;
+
             await _orderRepository.UpdateAsync(order);
         }
 
@@ -38,24 +63,15 @@ namespace KDSOrderManagement.Services
             await _orderRepository.DeleteAsync(id);
         }
 
-        public async Task<IEnumerable<OrderItem>> GetItemsByOrderIdAsync(int id)
+        private void Validate(OrderDto orderDto)
         {
-            return await _orderRepository.GetItemsByOrderIdAsync(id);
-        }
+            var validator = new OrderValidator();
+            var resultValidator = validator.Validate(orderDto);
 
-        public async Task<OrderItem> AddItemToOrderAsync(int id, OrderItem item)
-        {
-            return await _orderRepository.AddItemAsync(id, item);
-        }
-
-        public async Task UpdateOrderItemAsync(OrderItem item)
-        {
-            await _orderRepository.UpdateItemAsync(item);
-        }
-
-        public async Task DeleteOrderItemAsync(int id, int itemId)
-        {
-            await _orderRepository.DeleteItemAsync(id, itemId);
+            if (!resultValidator.IsValid)
+            {
+                throw new ValidationException(resultValidator.Errors);
+            }
         }
     }
 }

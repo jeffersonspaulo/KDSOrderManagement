@@ -1,7 +1,10 @@
-﻿namespace KDSOrderManagement.Services.Interfaces
+﻿using KDSOrderManagement.Models;
+
+namespace KDSOrderManagement.Services.Interfaces
 {
     public interface IUserService
     {
-        Task<string> AuthenticateAsync(string username, string password);
+        Task<string> CreateAsync(UserDto userDto);
+        Task<string> AuthenticateAsync(UserDto userDto);
     }
 }
