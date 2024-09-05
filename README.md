@@ -37,5 +37,7 @@ O JWT é usado para garantir que apenas usuários autenticados e autorizados pos
 Optei por utilizar o Serilog no gerenciamento de logs de erros. O Serilog disponibiliza uma flexibilidade de customização, os logs são bem estruturados e fáceis de entendimento.
 
 A aplicação é implantada em containers Docker, o que inclui tanto a API quanto o banco de dados.
+Para subir o docker (API e Banco de Dados), basta abrir o terminal na raíz do projeto e executar: docker-compose up --build
+
 O uso de Docker simplifica o processo de deployment e proporciona uma solução consistente e portável.
 O Docker Compose é utilizado para gerenciar e configurar os containers, garantindo que a aplicação e o banco de dados sejam executados em conjunto conforme necessário.
