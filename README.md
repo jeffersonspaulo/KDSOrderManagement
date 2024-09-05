@@ -3,7 +3,7 @@
 A arquitetura utilizada no projeto é a Clean Architecture. Essa arquitetura proporciona uma clara separação de responsabilidades, facilita muito o entendimento e a manutenção da aplicação.
 A Solução foi dividida pensando da seguinte forma: 
 - Apresentação: Contém a API com a exposição dos endpoints e comunicação com o cliente.
-- Aplicação: Onde se encontram as Services. Contém a lógica de negócios e realiza a interação entre a camada de apresentação e a camada de dados.
+- Aplicação: Onde se encontram as Services. Contém a lógica de negócios e realiza a integração entre a camada de apresentação e a camada de dados.
 - Domínio: Define os modelos de domínios e entidades como também as DTOs.
 - Dados/Infraestrutura: Implementação da camada de dados.
 
@@ -32,7 +32,8 @@ A segurança da aplicação é gerenciada através da utilização de JSON Web T
 O JWT é usado para garantir que apenas usuários autenticados e autorizados possam acessar os endpoints da API. 
 
 --------------------------------------------------------------------------------------------------------------------------
- 5. Infraestrutura
+ 5. Infraestrutura: 
+
 Optei por utilizar o Serilog no gerenciamento de logs de erros. O Serilog disponibiliza uma flexibilidade de customização, os logs são bem estruturados e fáceis de entendimento.
 
 A aplicação é implantada em containers Docker, o que inclui tanto a API quanto o banco de dados.
