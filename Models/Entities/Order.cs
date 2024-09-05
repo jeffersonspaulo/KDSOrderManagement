@@ -1,4 +1,7 @@
-﻿namespace KDSOrderManagement.Models.Entities
+﻿using KDSOrderManagement.Models.Enums;
+using Newtonsoft.Json;
+
+namespace KDSOrderManagement.Models.Entities
 {
     public class Order
     {

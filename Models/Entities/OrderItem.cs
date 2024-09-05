@@ -1,4 +1,6 @@
-﻿namespace KDSOrderManagement.Models.Entities
+﻿using Newtonsoft.Json;
+
+namespace KDSOrderManagement.Models.Entities
 {
     public class OrderItem
     {
@@ -8,6 +10,8 @@
         public string Notes { get; set; }
 
         public int OrderId { get; set; }
+
+        [JsonIgnore]
         public Order Order { get; set; }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using KDSOrderManagement.Data.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
 
 namespace KDSOrderManagement.Data.Repositories
 {
@@ -22,6 +23,30 @@ namespace KDSOrderManagement.Data.Repositories
         public async Task<T> GetByIdAsync(int id)
         {
             return await _dbSet.FindAsync(id);
+        }
+
+        public async Task<IEnumerable<T>> GetAllWithIncludesAsync(params Expression<Func<T, object>>[] includes)
+        {
+            IQueryable<T> query = _dbSet;
+
+            foreach (var include in includes)
+            {
+                query = query.Include(include);
+            }
+
+            return await query.ToListAsync();
+        }
+
+        public async Task<T> GetByIdWithIncludesAsync(int id, params Expression<Func<T, object>>[] includes)
+        {
+            IQueryable<T> query = _dbSet;
+
+            foreach (var include in includes)
+            {
+                query = query.Include(include);
+            }
+
+            return await query.SingleOrDefaultAsync(e => EF.Property<int>(e, "Id") == id);
         }
 
         public async Task<T> AddAsync(T entity)
@@ -48,5 +73,4 @@ namespace KDSOrderManagement.Data.Repositories
             }
         }
     }
-
 }

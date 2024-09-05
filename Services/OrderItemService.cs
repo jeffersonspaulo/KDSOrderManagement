@@ -1,7 +1,7 @@
 ﻿using FluentValidation;
 using KDSOrderManagement.Data.Repositories;
 using KDSOrderManagement.Data.Repositories.Interfaces;
-using KDSOrderManagement.Models;
+using KDSOrderManagement.Models.Dtos;
 using KDSOrderManagement.Models.Entities;
 using KDSOrderManagement.Services.Interfaces;
 using KDSOrderManagement.Validators;

@@ -1,4 +1,4 @@
-﻿using KDSOrderManagement.Models;
+﻿using KDSOrderManagement.Models.Dtos;
 
 namespace KDSOrderManagement.Services.Interfaces
 {

@@ -1,4 +1,4 @@
-﻿namespace KDSOrderManagement.Models
+﻿namespace KDSOrderManagement.Models.Dtos
 {
     public class UserDto
     {

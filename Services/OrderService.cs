@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 using KDSOrderManagement.Data.Repositories.Interfaces;
-using KDSOrderManagement.Models;
+using KDSOrderManagement.Models.Dtos;
 using KDSOrderManagement.Models.Entities;
 using KDSOrderManagement.Services.Interfaces;
 using KDSOrderManagement.Validators;
@@ -18,12 +18,12 @@ namespace KDSOrderManagement.Services
 
         public async Task<IEnumerable<Order>> GetAllAsync()
         {
-            return await _orderRepository.GetAllAsync();
+            return await _orderRepository.GetAllWithIncludesAsync(i => i.Items);
         }
 
         public async Task<Order> GetByIdAsync(int id)
         {
-            return await _orderRepository.GetByIdAsync(id);
+            return await _orderRepository.GetByIdWithIncludesAsync(id, i => i.Items);
         }
 
         public async Task<Order> CreateAsync(OrderDto orderDto)

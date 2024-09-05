@@ -12,6 +12,5 @@ namespace KDSOrderManagement.Data.Repositories
         {
             _context = context;
         }
-        
     }
 }

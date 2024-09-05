@@ -1,9 +1,10 @@
 ﻿using FluentValidation;
 using KDSOrderManagement.Data.Repositories.Interfaces;
-using KDSOrderManagement.Models;
+using KDSOrderManagement.Models.Dtos;
 using KDSOrderManagement.Models.Entities;
 using KDSOrderManagement.Services.Interfaces;
 using KDSOrderManagement.Validators;
+using System.Security.Cryptography;
 
 namespace KDSOrderManagement.Services
 {
@@ -65,7 +66,9 @@ namespace KDSOrderManagement.Services
             var user = await _userRepository.GetByUsernameAsync(userDto.Username);
 
             if (user == null || !VerifyPasswordHash(userDto.Password, user.PasswordHash))
-                return null;
+            {
+                throw new UnauthorizedAccessException("Invalid username or password.");
+            }
 
             var token = _tokenService.GenerateToken(user);
 
@@ -74,6 +77,8 @@ namespace KDSOrderManagement.Services
 
         private bool VerifyPasswordHash(string password, string passwordHash)
         {
+            var secretKey = Convert.ToBase64String(RandomNumberGenerator.GetBytes(32));
+
             return BCrypt.Net.BCrypt.Verify(password, passwordHash);
         }
     }

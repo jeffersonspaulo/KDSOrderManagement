@@ -15,7 +15,10 @@ namespace KDSOrderManagement.Data.Repositories
 
         public async Task<IEnumerable<OrderItem>> GetItemsByOrderIdAsync(int orderId)
         {
-            return await _context.OrderItems.Where(item => item.OrderId == orderId).ToListAsync();
+            return await _context.OrderItems
+                .Include(item => item.Order)
+                .Where(item => item.OrderId == orderId)
+                .ToListAsync();
         }
 
         public async Task<OrderItem> AddItemAsync(int orderId, OrderItem item)
@@ -24,7 +27,11 @@ namespace KDSOrderManagement.Data.Repositories
             await _context.OrderItems.AddAsync(item);
             await _context.SaveChangesAsync();
 
-            return item;
+            var addedItem = await _context.OrderItems
+                .Include(i => i.Order)
+                .SingleOrDefaultAsync(i => i.Id == item.Id);
+
+            return addedItem;
         }
 
         public async Task UpdateItemAsync(OrderItem item)
