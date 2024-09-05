@@ -1,4 +1,6 @@
 using KDSOrderManagement.Configurations;
+using KDSOrderManagement.Data;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using Serilog;
 
@@ -50,9 +52,12 @@ builder.Services.AddSwaggerGen(c =>
 });
 builder.Services.RegisterServices(builder.Configuration);
 
+builder.Services.AddDbContext<OrderContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
 var app = builder.Build();
 
-if (app.Environment.IsDevelopment())
+if (app.Environment.IsDevelopment() || Environment.GetEnvironmentVariable("DOTNET_RUNNING_IN_CONTAINER") == "true")
 {
     app.UseSwagger();
     app.UseSwaggerUI();
@@ -64,5 +69,11 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+
+using (var scope = app.Services.CreateScope())
+{
+    var dbContext = scope.ServiceProvider.GetRequiredService<OrderContext>();
+    dbContext.Database.Migrate();  // Aplica as migrações pendentes e cria o banco de dados se não existir
+}
 
 app.Run();

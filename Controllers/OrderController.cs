@@ -92,7 +92,7 @@ namespace KDSOrderManagement.Controllers
             catch (Exception ex)
             {
                 _logger.LogError(ex, ex.Message);
-                return BadRequest(new { ErrorMessage = "An error occurred while processing the request." });
+                return BadRequest(new { ErrorMessage = "An error occurred while processing the request.", Description = ex.Message });
             }
         }
 
@@ -115,7 +115,7 @@ namespace KDSOrderManagement.Controllers
             catch (Exception ex)
             {
                 _logger.LogError(ex, ex.Message);
-                return BadRequest(new { ErrorMessage = "An error occurred while processing the request." });
+                return BadRequest(new { ErrorMessage = "An error occurred while processing the request.", Description = ex.Message });
             }
         }
 
