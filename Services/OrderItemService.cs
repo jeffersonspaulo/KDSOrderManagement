@@ -1,5 +1,4 @@
 ﻿using FluentValidation;
-using KDSOrderManagement.Data.Repositories;
 using KDSOrderManagement.Data.Repositories.Interfaces;
 using KDSOrderManagement.Models.Dtos;
 using KDSOrderManagement.Models.Entities;
@@ -40,7 +39,6 @@ namespace KDSOrderManagement.Services
         {
             Validate(orderItemDto);
 
-            //TODO: Verificar atualizar item de um pedido... 
             var orderItem = await _orderItemRepository.GetByIdAsync(orderItemId);
 
             if (orderItem == null)

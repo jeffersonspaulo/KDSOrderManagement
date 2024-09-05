@@ -1,6 +1,5 @@
 ﻿using KDSOrderManagement.Data.Repositories.Interfaces;
 using KDSOrderManagement.Models.Entities;
-using Microsoft.EntityFrameworkCore;
 
 namespace KDSOrderManagement.Data.Repositories
 {

@@ -73,7 +73,7 @@ app.MapControllers();
 using (var scope = app.Services.CreateScope())
 {
     var dbContext = scope.ServiceProvider.GetRequiredService<OrderContext>();
-    dbContext.Database.Migrate();  // Aplica as migrações pendentes e cria o banco de dados se não existir
+    dbContext.Database.Migrate(); 
 }
 
 app.Run();

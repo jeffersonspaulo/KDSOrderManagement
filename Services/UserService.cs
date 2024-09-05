@@ -77,8 +77,6 @@ namespace KDSOrderManagement.Services
 
         private bool VerifyPasswordHash(string password, string passwordHash)
         {
-            var secretKey = Convert.ToBase64String(RandomNumberGenerator.GetBytes(32));
-
             return BCrypt.Net.BCrypt.Verify(password, passwordHash);
         }
     }
