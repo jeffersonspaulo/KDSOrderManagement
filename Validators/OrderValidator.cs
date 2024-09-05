@@ -16,6 +16,7 @@ namespace KDSOrderManagement.Validators
                 .NotNull().WithMessage("Time cannot be null.");
 
             RuleFor(c => c.Status)
+                .IsInEnum().WithMessage("Status must be one of the following: 1 - Pending, 2 - InProgress, 3 - Completed, 4 - Cancelled.")
                 .NotEmpty().WithMessage("Status must be provided.")
                 .NotNull().WithMessage("Status cannot be null.");
         }
