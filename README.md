@@ -32,7 +32,7 @@ A segurança da aplicação é gerenciada através da utilização de JSON Web T
 O JWT é usado para garantir que apenas usuários autenticados e autorizados possam acessar os endpoints da API. 
 
 --------------------------------------------------------------------------------------------------------------------------
- 6. Infraestrutura
+ 5. Infraestrutura
 Optei por utilizar o Serilog no gerenciamento de logs de erros. O Serilog disponibiliza uma flexibilidade de customização, os logs são bem estruturados e fáceis de entendimento.
 
 A aplicação é implantada em containers Docker, o que inclui tanto a API quanto o banco de dados.
